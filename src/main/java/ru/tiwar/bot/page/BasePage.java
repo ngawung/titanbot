@@ -1,25 +1,23 @@
 package ru.tiwar.bot.page;
 
+import com.codeborne.selenide.Condition;
+import com.codeborne.selenide.ElementsCollection;
+import com.codeborne.selenide.SelenideElement;
+import com.codeborne.selenide.WebDriverRunner;
 import lombok.AllArgsConstructor;
 import lombok.NoArgsConstructor;
+import org.openqa.selenium.By;
 import ru.tiwar.bot.config.Config;
 import ru.tiwar.bot.model.Person;
 
 import java.text.SimpleDateFormat;
+import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.Date;
+import java.util.List;
 import java.util.concurrent.TimeUnit;
 
-import org.openqa.selenium.By;
-
-import com.codeborne.selenide.Condition;
-import com.codeborne.selenide.ElementsCollection;
-import com.codeborne.selenide.SelenideElement;
-
-import static com.codeborne.selenide.Selenide.$;
-import static com.codeborne.selenide.Selenide.$$;
-import static com.codeborne.selenide.Selenide.open;
-import static com.codeborne.selenide.Selenide.screenshot;
+import static com.codeborne.selenide.Selenide.*;
 
 @AllArgsConstructor
 @NoArgsConstructor
@@ -67,8 +65,19 @@ public class BasePage {
         return null;
     }
 
+    public SelenideElement findFirstIfExist(By... bys) {
+        List<SelenideElement> elements=new ArrayList<>();
+        for (By by : bys) {
+            elements.addAll($$(by));
+        }
+        if (!elements.isEmpty()) {
+            return elements.get(0);
+        }
+        return null;
+    }
+
     public void makeScreenShot() {
-        String filename = "screen_" + SDF.format(new Date()) + ".png";
+        String filename = "screen_" + SDF.format(new Date());
         String saved = screenshot(filename);
         System.err.println("ScreenShot saved to: " + saved);
     }

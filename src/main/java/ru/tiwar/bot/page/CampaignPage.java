@@ -1,5 +1,6 @@
 package ru.tiwar.bot.page;
 
+import com.codeborne.selenide.Selenide;
 import ru.tiwar.bot.config.Config;
 
 import org.openqa.selenium.By;
@@ -27,6 +28,8 @@ public class CampaignPage extends BasePage {
     private static String LOSE = "Поражение";
     private static By RETURN_TO_CAMPAIGN_BTN = RAID_BTN;
     private static String RETURN_TO_CAMPAIGN = "Вернуться в поход";
+    private static By NEXT_CAMPAIGN_SPAN = By.cssSelector("span[id^='time_']");
+
 
     public CampaignPage(Config config) {
         super(config);
@@ -52,6 +55,15 @@ public class CampaignPage extends BasePage {
             getReturnToCampaignButton().click();
         }
         return this;
+    }
+
+    public Long getSecondsToStart(){
+        SelenideElement se=findFirstIfExist(NEXT_CAMPAIGN_SPAN);
+        if (se!=null){
+            String timeoutMsec=se.getAttribute("id").replaceAll("\\D+","");
+            return Long.parseLong(timeoutMsec)/1000L;
+        }
+        return null;
     }
 
 
