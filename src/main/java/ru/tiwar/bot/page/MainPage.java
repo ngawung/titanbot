@@ -5,6 +5,9 @@ import ru.tiwar.bot.config.Config;
 public class MainPage extends BasePage {
     private static String MAIN_PAGE_PATH = "";
     private ArenaPage arenaPage;
+    private CavePage cavePage;
+    private CareerPage careerPage;
+    private CampaignPage campaignPage;
 
     public MainPage() {
         init();
@@ -17,6 +20,9 @@ public class MainPage extends BasePage {
 
     private void init() {
         this.arenaPage = new ArenaPage(config);
+        this.cavePage = new CavePage(config);
+        this.careerPage = new CareerPage(config);
+        this.campaignPage = new CampaignPage(config);
     }
 
     public MainPage openMainPage() {
@@ -24,8 +30,19 @@ public class MainPage extends BasePage {
         return this;
     }
 
-    public ArenaPage openArenaPage() {
-        openPage(MAIN_PAGE_PATH);
-        return arenaPage;
+    public ArenaPage goToArena() {
+        return arenaPage.gotoArena();
+    }
+
+    public CavePage goToCave() {
+        return cavePage.goToCave();
+    }
+
+    public CareerPage goToCareer() {
+        return careerPage.goToCareer();
+    }
+
+    public CampaignPage goToCamapign() {
+        return campaignPage.goToCampaign();
     }
 }

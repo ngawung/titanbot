@@ -7,5 +7,6 @@ import lombok.experimental.Accessors;
 @Accessors(chain = true)
 public class State {
     private Integer secondsToStart;
+    private Integer secondsToEnd;
     private Boolean isSigned;
 }

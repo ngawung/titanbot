@@ -12,7 +12,12 @@ import java.util.concurrent.TimeUnit;
 
 import org.openqa.selenium.By;
 
+import com.codeborne.selenide.Condition;
+import com.codeborne.selenide.ElementsCollection;
+import com.codeborne.selenide.SelenideElement;
+
 import static com.codeborne.selenide.Selenide.$;
+import static com.codeborne.selenide.Selenide.$$;
 import static com.codeborne.selenide.Selenide.open;
 import static com.codeborne.selenide.Selenide.screenshot;
 
@@ -34,18 +39,10 @@ public class BasePage {
         open(config.getUrl() + path);
     }
 
-//    protected int getHp() {
-//        return Integer.parseInt($(HP).getText().trim());
-//    }
-
-//    protected int getEnergy() {
-//        return Integer.parseInt($(ENERGY).getText().trim());
-//    }
-
-    protected Person refreshPersonState() {
+    public Person refreshPersonState() {
         String[] status = $(ARENA_FLOOR).getText().split("\\|");
         try {
-            person.refresh(Integer.parseInt(status[1].trim()), Integer.parseInt(status[2].trim()));
+            person.refresh(Integer.parseInt(status[status.length - 2].trim()), Integer.parseInt(status[status.length - 1].trim()));
         } catch (Exception e) {
             System.err.println("Status: " + Arrays.toString(status));
             makeScreenShot();
@@ -54,7 +51,23 @@ public class BasePage {
         return person;
     }
 
-    protected void makeScreenShot() {
+    public SelenideElement findFirstIfExist(By by, String text) {
+        ElementsCollection collection = $$(by).filter(Condition.text(text));
+        if (!collection.isEmpty()) {
+            return collection.first();
+        }
+        return null;
+    }
+
+    public SelenideElement findFirstIfExist(By by) {
+        ElementsCollection collection = $$(by);
+        if (!collection.isEmpty()) {
+            return collection.first();
+        }
+        return null;
+    }
+
+    public void makeScreenShot() {
         String filename = "screen_" + SDF.format(new Date()) + ".png";
         String saved = screenshot(filename);
         System.err.println("ScreenShot saved to: " + saved);

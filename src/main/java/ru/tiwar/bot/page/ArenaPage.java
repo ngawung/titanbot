@@ -1,6 +1,7 @@
 package ru.tiwar.bot.page;
 
 
+import lombok.Getter;
 import ru.tiwar.bot.config.Config;
 import ru.tiwar.bot.model.Fights;
 
@@ -19,10 +20,10 @@ public class ArenaPage extends BasePage {
     private static By ARENA_FIGHT_BTN = By.cssSelector("a.btn");
     private static ThreadLocalRandom RANDOM = ThreadLocalRandom.current();
     private static String ATTACK = "Атакoвать";
-    private static By FIGTH_RESULT_DIV = By.cssSelector("div[class='block_light']");
+    private static By FIGHT_RESULT_DIV = By.cssSelector("div[class='block_light']");
     private static String WIN = " Победа! ";
-
-    private Fights fights=new Fights();
+    @Getter
+    private Fights fights = new Fights();
 
 
     public ArenaPage(Config config) {
@@ -42,7 +43,7 @@ public class ArenaPage extends BasePage {
         while (flag) {
             if (refreshPersonState().isReadyForArenaFight()) {
                 fight();
-                boolean isWin = $$(FIGTH_RESULT_DIV).filter(Condition.text(WIN)).size() > 0;
+                boolean isWin = $$(FIGHT_RESULT_DIV).filter(Condition.text(WIN)).size() > 0;
                 fights.isWin(isWin);
             } else {
                 long sleepTime = 300L + RANDOM.nextLong(500L);
@@ -50,6 +51,16 @@ public class ArenaPage extends BasePage {
                 sleepFor(sleepTime);
                 gotoArena();
             }
+        }
+        return this;
+    }
+
+    public ArenaPage fightForAllMp() {
+        gotoArena();
+        while (refreshPersonState().isReadyForArenaFight()) {
+            fight();
+            boolean isWin = $$(FIGHT_RESULT_DIV).filter(Condition.text(WIN)).size() > 0;
+            fights.isWin(isWin);
         }
         return this;
     }
