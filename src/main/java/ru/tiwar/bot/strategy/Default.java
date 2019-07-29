@@ -7,6 +7,8 @@ import ru.tiwar.bot.strategy.actions.CampaignAction;
 import ru.tiwar.bot.strategy.actions.CareerAction;
 import ru.tiwar.bot.strategy.actions.CaveAction;
 import ru.tiwar.bot.strategy.actions.FightForAllAction;
+import ru.tiwar.bot.strategy.actions.RefreshPersonStatsAction;
+import ru.tiwar.bot.strategy.actions.TrainAction;
 import ru.tiwar.bot.strategy.actions.WaitAction;
 import ru.tiwar.bot.strategy.defaultStrategy.CorrectWaitActionForCaveSearchPostAction;
 
@@ -30,9 +32,11 @@ public class Default extends Strategy {
         waitAction = new WaitAction(WaitAction.WAIT_5_TO_10MINUTES);
         caveAction = new CaveAction(mainPage);
         caveAction.addPostAction(new CorrectWaitActionForCaveSearchPostAction(waitAction));
+        actions.add(new RefreshPersonStatsAction(mainPage));
         actions.add(new FightForAllAction(mainPage));
         actions.add(new CareerAction(mainPage));
         actions.add(new CampaignAction(mainPage));
+        actions.add(new TrainAction(mainPage));
         actions.add(caveAction);
         actions.add(waitAction);
         return actions;

@@ -1,7 +1,6 @@
 package ru.tiwar.bot.strategy.actions;
 
 import ru.tiwar.bot.page.CampaignPage;
-import ru.tiwar.bot.page.CareerPage;
 import ru.tiwar.bot.page.MainPage;
 
 public class CampaignAction extends Action {
@@ -17,7 +16,7 @@ public class CampaignAction extends Action {
         if (nextCampaignTime!=null && System.currentTimeMillis()<nextCampaignTime){
             return;
         }
-        campaignPage = mainPage.goToCamapign();
+        campaignPage = mainPage.goToCampaign();
         if (campaignPage.getRaidsCount()>0) {
             campaignPage.raid();
         }

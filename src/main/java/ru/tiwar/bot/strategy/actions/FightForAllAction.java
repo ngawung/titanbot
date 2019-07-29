@@ -13,8 +13,8 @@ public class FightForAllAction extends Action {
     @Override
     public void doAction() {
         arenaPage = mainPage.goToArena();
-        arenaPage.fightForAllMp();
-        arenaPage.refreshPersonState();
+        arenaPage.fightForAllMp(mainPage.getPerson());
+        arenaPage.refreshPersonHpMp(mainPage.getPerson());
         System.out.println(arenaPage.getFights());
     }
 }

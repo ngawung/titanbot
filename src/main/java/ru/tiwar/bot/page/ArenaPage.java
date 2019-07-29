@@ -4,6 +4,7 @@ package ru.tiwar.bot.page;
 import lombok.Getter;
 import ru.tiwar.bot.config.Config;
 import ru.tiwar.bot.model.Fights;
+import ru.tiwar.bot.model.Person;
 
 import java.util.concurrent.ThreadLocalRandom;
 
@@ -35,13 +36,13 @@ public class ArenaPage extends BasePage {
         return this;
     }
 
-    public ArenaPage fightForAll() {
+    public ArenaPage fightForAll(Person person) {
         int count = 0;
         gotoArena();
         boolean flag = true;
 
         while (flag) {
-            if (refreshPersonState().isReadyForArenaFight()) {
+            if (refreshPersonHpMp(person).isReadyForArenaFight()) {
                 fight();
                 boolean isWin = $$(FIGHT_RESULT_DIV).filter(Condition.text(WIN)).size() > 0;
                 fights.isWin(isWin);
@@ -55,9 +56,9 @@ public class ArenaPage extends BasePage {
         return this;
     }
 
-    public ArenaPage fightForAllMp() {
+    public ArenaPage fightForAllMp(Person person) {
         gotoArena();
-        while (refreshPersonState().isReadyForArenaFight()) {
+        while (refreshPersonHpMp(person).isReadyForArenaFight()) {
             fight();
             boolean isWin = $$(FIGHT_RESULT_DIV).filter(Condition.text(WIN)).size() > 0;
             fights.isWin(isWin);

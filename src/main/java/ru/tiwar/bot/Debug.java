@@ -6,18 +6,22 @@ import ru.tiwar.bot.page.LoginPage;
 import ru.tiwar.bot.page.MainPage;
 
 import java.util.Arrays;
+import java.util.regex.Matcher;
+import java.util.regex.Pattern;
 import java.util.stream.Stream;
 
 public class Debug {
     public static void main(String[] args) {
         //4 ч 37 мин
-        String text="4 ч 37 мин";
-        Long nextStartInSec=0L;
-        String[] hours=text.split("\\s+ч");
-        nextStartInSec = hours.length>1 ? Long.parseLong(hours[0])*3600 : nextStartInSec;
-        if (text.contains("мин")){
-            String minutes=Stream.of(text.split(".*ч\\s+")).filter(s->s.contains("мин")).findAny().orElse("0");
-            nextStartInSec += Long.parseLong(minutes.replaceAll("\\D+",""))/60L;
-        }
+        String text="Сила: 803 (урон 130 - 185)\n" +
+                "+3 к силе\n" +
+                "Чем больше сила, тем больше урона нанесёшь врагу!\n" +
+                "Улучшить за gold 35";
+        Pattern p=Pattern.compile(":\\s+(\\d+)\\s*");
+        Matcher m=p.matcher(text);
+        System.out.println(m.find());
+        System.out.println(m.groupCount());
+        System.out.println(m.group(0));
+        System.out.println(m.group(1));
     }
 }
