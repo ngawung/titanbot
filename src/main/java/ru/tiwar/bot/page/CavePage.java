@@ -1,10 +1,12 @@
 package ru.tiwar.bot.page;
 
-import com.codeborne.selenide.SelenideElement;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
-import org.openqa.selenium.By;
 import ru.tiwar.bot.config.Config;
+
+import org.openqa.selenium.By;
+
+import com.codeborne.selenide.SelenideElement;
 
 import static com.codeborne.selenide.Selenide.$;
 import static com.codeborne.selenide.Selenide.$$;
@@ -16,6 +18,7 @@ public class CavePage extends BasePage {
     private static String DOWN_TO_CAVE = "Спуститься в пещеру";
     private static String SEARCH_RESOURCES = "Вы осматриваете пещеру";
     private static String START_MINING = "Начать добычу";
+    private static String BACK_TO_CAVE = "Обратно в пещеру";
     private static String KILL = "Напасть";
     private static String MINING = "Вы занимаетесь добычей ресурсов";
     private static By NEW_SEARCH_BTN = By.xpath("//span[@class='label' and contains(text(),'" + NEW_SEARCH + "')]");
@@ -24,6 +27,7 @@ public class CavePage extends BasePage {
     private static By START_MINING_BTN = By.xpath("//span[@class='label' and contains(text(),'" + START_MINING + "')]");
     private static By MINING_SPAN = By.xpath("//span[@class='blue' and contains(text(),'" + MINING + "')]");
     private static By KILL_SPAN = By.xpath("//span[@class='label' and contains(text(),'" + KILL + "')]");
+    private static By BACK_TO_CAVE_SPAN = By.xpath("//span[@class='label' and contains(text(),'" + BACK_TO_CAVE + "')]");
     private static By H2_KILL_STATUS = By.tagName("h2");
     private static String DEFEAT = "Поражение";
     private CaveProcess caveProcess;
@@ -43,31 +47,32 @@ public class CavePage extends BasePage {
         return caveProcess;
     }
 
-    public CavePage startSearchAndMining() {
-        switch (caveProcess.status) {
-            case DONE:
-                SelenideElement searchButton = findFirstIfExist(NEW_SEARCH_BTN, DOWN_TO_CAVE_BTN);
-                searchButton.click();
-                break;
-            case READY_FOR_MINE:
-                $(START_MINING_BTN).click();
-                break;
-            case FIGHT:
-                $(KILL_SPAN).click();
-                if (findFirstIfExist(H2_KILL_STATUS, DEFEAT) == null) {
-                    System.out.println("Fight in mine: defeat");
-                } else {
-                    System.out.printf("Fight in mine: win");
-                }
-                goToCave();
-                startSearchAndMining();
-                break;
-        }
-        sleepFor(2L);
-        if (checkCaveProcess().status==CaveStatus.FIGHT){
-            return startSearchAndMining();
-        }
+    private SelenideElement getSearchButton() {
+        return findFirstIfExist(NEW_SEARCH_BTN, DOWN_TO_CAVE_BTN);
+    }
+
+    public CavePage clickNewSearchButton() {
+        getSearchButton().click();
         return this;
+    }
+
+    public CavePage clickStartMiningButton() {
+        $(START_MINING_BTN).click();
+        return this;
+    }
+
+    public CavePage clickStartFightButton() {
+        $(KILL_SPAN).click();
+        return this;
+    }
+
+    public CavePage clickBackToCaveButton(){
+        findFirstIfExist(BACK_TO_CAVE_SPAN).click();
+        return this;
+    }
+
+    public boolean checkMonsterIsDefeated() {
+        return findFirstIfExist(H2_KILL_STATUS, DEFEAT) == null;
     }
 
     public CaveProcess checkCaveProcess() {
@@ -94,7 +99,7 @@ public class CavePage extends BasePage {
         return caveProcess;
     }
 
-    enum CaveStatus {
+    public enum CaveStatus {
         SEARCH,
         READY_FOR_MINE,
         MINING,
@@ -111,7 +116,7 @@ public class CavePage extends BasePage {
         public boolean isReadyForAction() {
             return status == CaveStatus.DONE ||
                     status == CaveStatus.READY_FOR_MINE ||
-                    status.equals(CaveStatus.FIGHT)||
+                    status.equals(CaveStatus.FIGHT) ||
                     status == CaveStatus.UNDEFINED;
         }
 

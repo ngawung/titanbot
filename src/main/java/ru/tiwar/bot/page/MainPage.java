@@ -36,6 +36,10 @@ public class MainPage extends BasePage {
         return this;
     }
 
+    public Person refreshPersonHpMp() {
+        return refreshPersonHpMp(person);
+    }
+
     public ArenaPage goToArena() {
         return arenaPage.gotoArena();
     }

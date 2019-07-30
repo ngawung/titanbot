@@ -14,7 +14,7 @@ public class FightForAllAction extends Action {
     public void doAction() {
         arenaPage = mainPage.goToArena();
         arenaPage.fightForAllMp(mainPage.getPerson());
-        arenaPage.refreshPersonHpMp(mainPage.getPerson());
+        mainPage.refreshPersonHpMp();
         System.out.println(arenaPage.getFights());
     }
 }
