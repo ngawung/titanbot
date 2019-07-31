@@ -3,6 +3,7 @@ package ru.tiwar.bot.page;
 import lombok.Getter;
 import ru.tiwar.bot.config.Config;
 import ru.tiwar.bot.model.Person;
+import ru.tiwar.bot.page.clan.DungeonPage;
 
 public class MainPage extends BasePage {
     private static String MAIN_PAGE_PATH = "";
@@ -13,6 +14,7 @@ public class MainPage extends BasePage {
     private CareerPage careerPage;
     private CampaignPage campaignPage;
     private TrainPage trainPage;
+    private DungeonPage clanDungeonPage;
 
     public MainPage() {
         init();
@@ -29,6 +31,7 @@ public class MainPage extends BasePage {
         this.careerPage = new CareerPage(config);
         this.campaignPage = new CampaignPage(config);
         this.trainPage = new TrainPage(config);
+        this.clanDungeonPage = new DungeonPage(config);
     }
 
     public MainPage openMainPage() {
@@ -58,5 +61,9 @@ public class MainPage extends BasePage {
 
     public TrainPage goToTraining() {
         return trainPage.goToTraining();
+    }
+
+    public DungeonPage goToClanDungeonPage() {
+        return clanDungeonPage.goToClanDungeon();
     }
 }

@@ -29,6 +29,8 @@ public class BasePage {
     protected static By GOLD_IMG = By.cssSelector("img[src='/images/icon/gold.png']");
     protected static By SILVER_IMG = By.cssSelector("img[src='/images/icon/silver.png']");
     protected static By DIV_CENTER = By.cssSelector("div.center");
+    protected static By DIV_ZERO_CENTER = By.cssSelector("div[class='block_zero center']");
+    protected static By TIME_SPAN = By.cssSelector("span[id^='time_']");
     protected static String NOT_DIGITAL_REGEXP = "\\D+";
     private static SimpleDateFormat SDF = new SimpleDateFormat("yyyy-MM-dd_HH-mm-ss");
     private static By HP = By.cssSelector("img[alt='hp']");
