@@ -36,6 +36,7 @@ public class BasePage {
     private static By HP = By.cssSelector("img[alt='hp']");
     private static By ENERGY = By.cssSelector("img[alt='mp']");
     private static By ARENA_FLOOR = By.cssSelector("span[class='bl rght nwr'");
+    private static String KILO = "K";
     protected Config config = Config.DEFAULT;
 
     public BasePage(Config config) {
@@ -101,8 +102,12 @@ public class BasePage {
         String[] values = wealth.split("\\s*\\|\\s*");
         int lvl = Integer.parseInt(values[0].replaceAll(NOT_DIGITAL_REGEXP, ""));
         int gold = Integer.parseInt(values[1].replaceAll(NOT_DIGITAL_REGEXP, ""));
-        int silver = Integer.parseInt(values[2].trim().replaceAll(NOT_DIGITAL_REGEXP, ""));
-        return person.refreshWealth(lvl, gold, silver);
+        Double silver = Double.parseDouble(values[2].trim().replaceAll("[a-zA-Z']", ""));
+        if (values[2].trim().endsWith(KILO)){
+            silver*=1000;
+        }
+        int silverCoins=silver.intValue();
+        return person.refreshWealth(lvl, gold, silverCoins);
     }
 
     public void makeScreenShot() {
