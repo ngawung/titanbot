@@ -1,6 +1,10 @@
 package ru.tiwar.bot.page;
 
+import com.codeborne.selenide.Condition;
+import com.codeborne.selenide.ElementsCollection;
+import com.codeborne.selenide.SelenideElement;
 import lombok.NoArgsConstructor;
+import org.openqa.selenium.By;
 import ru.tiwar.bot.condition.ChildCondition;
 import ru.tiwar.bot.config.Config;
 import ru.tiwar.bot.model.Img;
@@ -13,15 +17,7 @@ import java.util.Date;
 import java.util.List;
 import java.util.concurrent.TimeUnit;
 
-import org.openqa.selenium.By;
-
-import com.codeborne.selenide.Condition;
-import com.codeborne.selenide.ElementsCollection;
-import com.codeborne.selenide.SelenideElement;
-
-import static com.codeborne.selenide.Selenide.$$;
-import static com.codeborne.selenide.Selenide.open;
-import static com.codeborne.selenide.Selenide.screenshot;
+import static com.codeborne.selenide.Selenide.*;
 
 @NoArgsConstructor
 public class BasePage {
@@ -37,6 +33,7 @@ public class BasePage {
     private static By ENERGY = By.cssSelector("img[alt='mp']");
     private static By ARENA_FLOOR = By.cssSelector("span[class='bl rght nwr'");
     private static String KILO = "K";
+    private static String MIL = "M";
     protected Config config = Config.DEFAULT;
 
     public BasePage(Config config) {
@@ -103,10 +100,12 @@ public class BasePage {
         int lvl = Integer.parseInt(values[0].replaceAll(NOT_DIGITAL_REGEXP, ""));
         int gold = Integer.parseInt(values[1].replaceAll(NOT_DIGITAL_REGEXP, ""));
         Double silver = Double.parseDouble(values[2].trim().replaceAll("[a-zA-Z']", ""));
-        if (values[2].trim().endsWith(KILO)){
-            silver*=1000;
+        if (values[2].trim().endsWith(KILO)) {
+            silver *= 1000;
+        } else if (values[2].trim().endsWith(MIL)) {
+            silver *= 1_000_000;
         }
-        int silverCoins=silver.intValue();
+        int silverCoins = silver.intValue();
         return person.refreshWealth(lvl, gold, silverCoins);
     }
 

@@ -35,6 +35,7 @@ public class CaveAction extends Action {
                 break;
             case READY_FOR_MINE:
                 cavePage.clickStartMiningButton();
+                break;
             case FIGHT:
                 cavePage.goToCave();
                 if (mainPage.refreshPersonHpMp().isReadyForArenaFight()) {
